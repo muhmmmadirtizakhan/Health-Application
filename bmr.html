@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BMR Calculator - Health Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      height: 100vh;
+      background-image: url('https://as2.ftcdn.net/jpg/04/47/09/15/1000_F_447091576_kHIOcVgCTkndi3MHb6gM6vdVgOCH7l2K.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding-top: 50px;
+      position: relative;
+    }
+    .back-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+    }
+    .back-btn:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .back-btn i {
+      margin-right: 5px;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: row;
+      width: 90%;
+      max-width: 900px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+      overflow: hidden;
+      margin-top: 20px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    }
+    .left, .right {
+      flex: 1;
+      padding: 40px;
+    }
+    .left h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      background-color: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      background-color: #00bfff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #008ecc;
+    }
+    .result {
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .bmr-scale {
+      width: 100%;
+      height: 20px;
+      background: linear-gradient(to right, #00ffcc, #00ff00, #ffaa00, #ff0000);
+      border-radius: 10px;
+      margin: 15px 0;
+      position: relative;
+    }
+    .bmr-indicator {
+      position: absolute;
+      top: -10px;
+      width: 3px;
+      height: 40px;
+      background-color: white;
+      transform: translateX(-50%);
+      display: none;
+    }
+    .categories {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 15px;
+    }
+    .categories h3 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .categories ul {
+      list-style: none;
+      padding: 0 10px;
+    }
+    .categories li {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    @media(max-width:768px) {
+      .container {
+        flex-direction: column;
+      }
+      .left, .right {
+        padding: 30px;
+      }
+    }
+    /* Select dropdown opened options styling */
+select option {
+  background-color: rgba(0,0,0,0.9); /* Darker so text visible */
+  color: white;
+}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='hanannanana.html'">
+    <i class="fas fa-arrow-left"></i> Dashboard
+  </button>
+
+  <div class="container">
+    <div class="left">
+      <h2>BMR Calculator</h2>
+      <label for="weight">Weight (kg):</label>
+      <input type="number" id="weight" placeholder="e.g. 65">
+      <label for="height">Height (cm):</label>
+      <input type="number" id="height" placeholder="e.g. 175">
+      <label for="age">Age (years):</label>
+      <input type="number" id="age" placeholder="e.g. 25">
+      <label for="gender">Gender:</label>
+      <select id="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <button onclick="calculateBMR()">Calculate BMR</button>
+    </div>
+    <div class="right">
+      <div class="result" id="result">Enter your details to calculate BMR</div>
+      <div class="bmr-scale" id="bmrScale">
+        <div class="bmr-indicator" id="bmrIndicator"></div>
+      </div>
+      <div class="categories">
+        <h3>BMR Categories:</h3>
+        <ul>
+          <li>Low BMR: Less than 1200</li>
+          <li>Average BMR: 1200 – 1500</li>
+          <li>Active BMR: 1500 – 1800</li>
+          <li>High BMR: Above 1800</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateBMR() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const height = parseFloat(document.getElementById("height").value);
+      const age = parseFloat(document.getElementById("age").value);
+      const gender = document.getElementById("gender").value;
+      const resultDiv = document.getElementById("result");
+      const bmrIndicator = document.getElementById("bmrIndicator");
+
+      if (!weight || !height || !age) {
+        resultDiv.textContent = "Please enter valid values!";
+        bmrIndicator.style.display = "none";
+        return;
+      }
+
+      let bmr = 0;
+      if (gender === "male") {
+        bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+      } else {
+        bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+      }
+
+      let category = "";
+      if (bmr < 1200) category = "Low BMR";
+      else if (bmr < 1500) category = "Average BMR";
+      else if (bmr < 1800) category = "Active BMR";
+      else category = "High BMR";
+
+      let position = (bmr / 2000) * 100;
+      if (position > 100) position = 100;
+
+      resultDiv.innerHTML = `
+        <div>Your BMR: <strong>${bmr.toFixed(2)} calories/day</strong></div>
+        <div>Category: <strong>${category}</strong></div>
+      `;
+      bmrIndicator.style.left = `${position}%`;
+      bmrIndicator.style.display = "block";
+    }
+  </script>
+</body>
+</html>

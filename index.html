@@ -1,148 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login & Register</title>
-  <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
 
-    body {
-      margin: 0;
-      padding: 0;
-      background-image: url("login pic.png");
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-    .container {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 35px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      width: 390px;
-      max-width: 90%;
-      text-align: center;
-      color: white;
-    }
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-    h2 { margin-bottom: 25px; color: white; font-size: 1.8em; }
-
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 10px 0;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 8px;
-      font-size: 1.3em;
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    input::placeholder { color: rgba(255, 255, 255, 0.7); }
-
-    input:focus {
-      border-color: #007BFF;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4);
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      margin-top: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.1em;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    button + button {
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Login / Register</h2>
-    <input type="email" id="email" placeholder="Enter email" />
-    <input type="password" id="password" placeholder="Enter password" />
-    <button onclick="login()">Login</button>
-    <button onclick="register()">Register</button>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyATnY-9FlItj1TByxgtOwg1DKUWJ17dcSQ",
-      authDomain: "game-zone-by-mik.firebaseapp.com",
-      projectId: "game-zone-by-mik",
-      storageBucket: "game-zone-by-mik.appspot.com",
-      messagingSenderId: "243191168499",
-      appId: "1:243191168499:web:db5ae6058ba1d4879ae686",
-      measurementId: "G-F6GP32TP8W"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    window.register = function () {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Registered: " + userCredential.user.email);
-          window.location.href = "final.html"; // Redirect after register
-        })
-        .catch((error) => {
-          alert("Registration error: " + error.message);
-        });
-    };
-
-    window.login = function () {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Logged in: " + userCredential.user.email);
-          window.location.href = "final.html"; // Redirect after login
-        })
-        .catch((error) => {
-          alert("Login error: " + error.message);
-        });
-    };
-
-    // Optional: Auto redirect if already logged in
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        window.location.href = "final.html";
-      }
-    });
-  </script>
-</body>
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
 </html>
-l

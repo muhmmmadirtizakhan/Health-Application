@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Feedback - Health Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body, html { height: 100%; width: 100%; }
+    body {
+      background: url('https://cdn.pixabay.com/photo/2022/05/18/07/08/feedback-7204547_1280.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      padding: 40px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      resize: vertical;
+      min-height: 120px;
+      font-size: 15px;
+    }
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      background-color: #00bfff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #008ecc;
+    }
+    .back-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  transition: background 0.3s;
+}
+.back-btn:hover {
+  background: rgba(0,0,0,0.9);
+}
+.back-btn i {
+  margin-right: 5px;
+}
+
+  </style>
+</head>
+<body>
+    <button class="back-btn" onclick="window.location.href='hanannanana.html'">
+  <i class="fas fa-arrow-left"></i> Dashboard
+</button>
+  <div class="container">
+    <h2>Submit Your Feedback</h2>
+    <label for="feedbackText">Your Feedback:</label>
+    <textarea id="feedbackText" placeholder="Write your feedback here..."></textarea>
+    <button onclick="submitFeedback()">Submit</button>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAVQS42_smu-NfYTzcp7ZX9uT6MlEacYQg",
+    authDomain: "html-94a05.firebaseapp.com",
+    projectId: "html-94a05",
+    storageBucket: "html-94a05.appspot.com",
+    messagingSenderId: "799108900775",
+    appId: "1:799108900775:web:dd4281b1419f0043477882"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  let currentUser = null;
+
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if (user) {
+      console.log("Logged in as:", user.email);
+    } else {
+      console.log("Not logged in.");
+    }
+  });
+
+  window.submitFeedback = async function() {
+    const feedback = document.getElementById("feedbackText").value.trim();
+    if (!feedback) {
+      alert("Please enter your feedback.");
+      return;
+    }
+
+    if (!currentUser) {
+      alert("You must be logged in to submit feedback.");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "feebacks"), {
+        feedback: feedback,
+        createdAt: serverTimestamp(),
+        userId: currentUser.uid,
+        userEmail: currentUser.email
+      });
+      alert("Thank you for your feedback!");
+      document.getElementById("feedbackText").value = "";
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      alert("Error submitting feedback: " + error.message);
+    }
+  };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Body Fat Percentage Calculator - Health Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      height: 100vh;
+      background-image: url('https://t3.ftcdn.net/jpg/09/80/60/86/240_F_980608665_6xKjBTfOIrE0PX740Wdp8BkdoizPkauT.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding-top: 70px; /* Thoda niche dashboard button */
+      position: relative;
+    }
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 15px;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+    }
+    .back-btn:hover {
+      background: rgba(0,0,0,0.6);
+    }
+    .back-btn i {
+      margin-right: 5px;
+    }
+    .container {
+  background: rgba(0,0,0,0.4); /* lighter glass */
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  max-width: 900px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.7);
+  overflow: hidden;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+    .left, .right {
+      flex: 1;
+      padding: 40px;
+    }
+    .left h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      background-color: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      background-color: #00bfff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #008ecc;
+    }
+    .result {
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .fat-scale {
+      width: 100%;
+      height: 20px;
+      background: linear-gradient(to right, #00ffcc, #00ff00, #ffaa00, #ff0000);
+      border-radius: 10px;
+      margin: 15px 0;
+      position: relative;
+    }
+    .fat-indicator {
+      position: absolute;
+      top: -10px;
+      width: 3px;
+      height: 40px;
+      background-color: white;
+      transform: translateX(-50%);
+      display: none;
+    }
+    .categories {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 15px;
+    }
+    .categories h3 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .categories ul {
+      list-style: none;
+      padding: 0 10px;
+    }
+    .categories li {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    @media(max-width:768px) {
+      .container {
+        flex-direction: column;
+      }
+      .left, .right {
+        padding: 30px;
+      }
+    }
+    select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(255,255,255,0.2);
+  color: white;
+  font-size: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+/* Select dropdown opened options styling */
+select option {
+  background-color: rgba(0,0,0,0.9); /* Darker so text visible */
+  color: white;
+}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='hanannanana.html'">
+    <i class="fas fa-arrow-left"></i> Dashboard
+  </button>
+
+  <div class="container">
+    <div class="left">
+      <h2>Body Fat Percentage Calculator</h2>
+      <label for="weight">Weight (kg):</label>
+      <input type="number" id="weight" placeholder="e.g. 70">
+      <label for="waist">Waist Circumference (cm):</label>
+      <input type="number" id="waist" placeholder="e.g. 85">
+      <label for="gender">Gender:</label>
+      <select id="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <button onclick="calculateFat()">Calculate Body Fat %</button>
+    </div>
+    <div class="right">
+      <div class="result" id="result">Enter your details to calculate Body Fat %</div>
+      <div class="fat-scale" id="fatScale">
+        <div class="fat-indicator" id="fatIndicator"></div>
+      </div>
+      <div class="categories">
+        <h3>Fat Percentage Categories:</h3>
+        <ul>
+          <li>Essential Fat: 2–5%</li>
+          <li>Athletes: 6–13%</li>
+          <li>Fitness: 14–17%</li>
+          <li>Average: 18–24%</li>
+          <li>Obese: 25%+</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateFat() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const waist = parseFloat(document.getElementById("waist").value);
+      const gender = document.getElementById("gender").value;
+      const resultDiv = document.getElementById("result");
+      const fatIndicator = document.getElementById("fatIndicator");
+
+      if (!weight || !waist) {
+        resultDiv.textContent = "Please enter valid values!";
+        fatIndicator.style.display = "none";
+        return;
+      }
+
+      let fatPercent = 0;
+      if (gender === "male") {
+        fatPercent = (4.15 * waist / 2.54 - 0.082 * weight * 2.20462 - 98.42) / (weight * 2.20462) * 100;
+      } else {
+        fatPercent = (4.15 * waist / 2.54 - 0.082 * weight * 2.20462 - 76.76) / (weight * 2.20462) * 100;
+      }
+
+      fatPercent = Math.max(2, fatPercent);
+
+      let category = "";
+      if (fatPercent < 6) category = "Essential Fat";
+      else if (fatPercent < 14) category = "Athletes";
+      else if (fatPercent < 18) category = "Fitness";
+      else if (fatPercent < 25) category = "Average";
+      else category = "Obese";
+
+      let position = (fatPercent / 40) * 100;
+      if (position > 100) position = 100;
+
+      resultDiv.innerHTML = `
+        <div>Your Body Fat %: <strong>${fatPercent.toFixed(2)}%</strong></div>
+        <div>Category: <strong>${category}</strong></div>
+      `;
+
+      fatIndicator.style.left = `${position}%`;
+      fatIndicator.style.display = "block";
+    }
+    
+
+  </script>
+</body>
+</html>

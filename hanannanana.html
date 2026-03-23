@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Health Hub Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-image:url('https://img.freepik.com/free-vector/gradient-abstract-wireframe-background_23-2149009903.jpg?semt=ais_hybrid&w=740');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      color: white;
+      overflow-y: auto;
+    }
+
+   header {
+  background: rgba(25, 91, 142, 0.4); /* Transparent blue */
+  color: white;
+  padding: 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 20px;
+      color: white;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      transition: transform 0.2s, background 0.2s;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .feature-card:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .logout-btn {
+      background-color: crimson;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 30px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to Health Hub Dashboard</h1>
+  </header>
+
+  <div class="container">
+    <div class="feature-grid">
+      <div class="feature-card" onclick="window.location.href='bmi.html'">1. BMI Calculator</div>
+      <div class="feature-card" onclick="location.href='bmr.html'">2. BMR Calculator</div>
+      <div class="feature-card" onclick="location.href='fatpercenatge.html'">3. Fat Percentage</div>
+      <div class="feature-card" onclick="location.href='https://html-94a05.web.app/idealweight.html'">4.Ideal Weight</div>
+      <div class="feature-card" onclick="location.href='tdee.html'">5. TDEE</div>
+      <div class="feature-card"onclick="location.href='wasit.html'">6. Waist-Height Ratio</div>
+      <div class="feature-card" onclick="location.href='water.html'">7. Water Requirement</div>
+      <div class="feature-card" onclick="location.href='heart.html'">8. Heart Rate Zones</div>
+      <div class="feature-card"  onclick="location.href='https://html-94a05.web.app/lean.html'">9.Lean Body Mass</div>
+      <div class="feature-card"  onclick="location.href='bsa.html'" >10. BSA Calculator</div>
+      <div class="feature-card"  onclick="location.href='description.html'" >11.description </div>
+      <div class="feature-card"  onclick="location.href='feedback.html'" >12.feedback </div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Firebase for logout -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVQS42_smu-NfYTzcp7ZX9uT6MlEacYQg",
+      authDomain: "html-94a05.firebaseapp.com",
+      projectId: "html-94a05",
+      storageBucket: "html-94a05.appspot.com",
+      messagingSenderId: "799108900775",
+      appId: "1:799108900775:web:dd4281b1419f0043477882"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.logout = function () {
+      signOut(auth).then(() => {
+        alert("Logged out successfully");
+        window.location.href = "dashboard.html";
+      }).catch((error) => {
+        alert("Logout error: " + error.message);
+      });
+    }
+  </script>
+</body>
+</html>

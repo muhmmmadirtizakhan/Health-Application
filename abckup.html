@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HEALTH-HUB APPLICATION</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body, html { height: 100%; width: 100%; }
+    .background {
+      background-image: url('https://kms-healthcare.com/wp-content/uploads/2022/04/iStock-1151915829-1024x597.jpg');
+      background-size: cover; background-position: center; height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .form-container {
+      background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+      border-radius: 20px; padding: 40px; color: white;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
+    }
+    .form-container h2 { text-align: center; margin-bottom: 20px; }
+    form label { display: block; margin-top: 15px; font-size: 14px; }
+    form input {
+      width: 100%; padding: 12px; border: none; margin-top: 5px;
+      border-radius: 10px; background: rgba(255,255,255,0.2); color: white;
+    }
+    form button {
+      width: 100%; margin-top: 20px; padding: 12px;
+      border: none; border-radius: 25px;
+      background-color: #195B8E; color: white; font-size: 16px; cursor: pointer;
+    }
+    form button:hover { background-color: #123b64; }
+    .bottom-text { text-align: center; margin-top: 15px; font-size: 13px; }
+    .bottom-text a { color: #00bfff; text-decoration: none; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="background">
+    <div class="form-container" id="login-box">
+      <h2>Login</h2>
+      <form id="login-form">
+        <label>Email</label>
+        <input id="login-email" type="email" required placeholder="you@example.com">
+        <label>Password</label>
+        <input id="login-password" type="password" required placeholder="••••••••">
+        <button type="submit">Login</button>
+      </form>
+      <p class="bottom-text">Don’t have an account? <a href="#" id="show-register">Register</a></p>
+    </div>
+
+    <div class="form-container hidden" id="register-box">
+      <h2>Register</h2>
+      <form id="register-form">
+        <label>Email</label>
+        <input id="reg-email" type="email" required placeholder="you@example.com">
+        <label>Password</label>
+        <input id="reg-password" type="password" required placeholder="••••••••">
+        <button type="submit">Register</button>
+      </form>
+      <p class="bottom-text">Already have an account? <a href="#" id="show-login">Login</a></p>
+    </div>
+  </div>
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAVQS42_smu-NfYTzcp7ZX9uT6MlEacYQg",
+    authDomain: "html-94a05.firebaseapp.com",
+    projectId: "html-94a05",
+    storageBucket: "html-94a05.appspot.com",
+    messagingSenderId: "799108900775",
+    appId: "1:799108900775:web:dd4281b1419f0043477882"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  document.getElementById("show-register").addEventListener("click", () => {
+    document.getElementById("login-box").classList.add("hidden");
+    document.getElementById("register-box").classList.remove("hidden");
+  });
+
+  document.getElementById("show-login").addEventListener("click", () => {
+    document.getElementById("register-box").classList.add("hidden");
+    document.getElementById("login-box").classList.remove("hidden");
+  });
+
+  document.getElementById("register-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("reg-email").value;
+    const password = document.getElementById("reg-password").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        return setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          createdAt: serverTimestamp()
+        });
+      })
+      .then(() => {
+        alert("Registration Successful! User data saved.");
+        window.location.href = "hanannanana.html";
+      
+      })
+      .catch((error) => alert("Registration Error: " + error.message));
+  });
+
+  document.getElementById("login-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        alert("Login Successful!");
+        window.location.href = "hanannanana.html";
+      })
+      .catch((error) => alert("Login Error: " + error.message));
+  });
+</script>
+
+</body>
+</html>
